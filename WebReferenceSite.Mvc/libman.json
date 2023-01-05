@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery.fancytree@2.38.2",
+      "destination": "wwwroot/jquery.fancytree/"
+    }
+  ]
+}
