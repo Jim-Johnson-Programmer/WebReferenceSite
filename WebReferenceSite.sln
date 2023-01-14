@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebReferenceSite", "WebReferenceSite\WebReferenceSite.csproj", "{F02F154D-ACC4-4832-BF6A-A647AF00709D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebReferenceSite.Mvc", "WebReferenceSite.Mvc\WebReferenceSite.Mvc.csproj", "{4D8DC2D4-305C-4805-8AB2-ADB22BE5A376}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebReferenceSite.Mvc.Tests", "WebReferenceSite.Mvc.Tests\WebReferenceSite.Mvc.Tests.csproj", "{6408F1BE-2AE1-46A8-B1EE-6A73E59463AA}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F02F154D-ACC4-4832-BF6A-A647AF00709D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F02F154D-ACC4-4832-BF6A-A647AF00709D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F02F154D-ACC4-4832-BF6A-A647AF00709D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F02F154D-ACC4-4832-BF6A-A647AF00709D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D8DC2D4-305C-4805-8AB2-ADB22BE5A376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D8DC2D4-305C-4805-8AB2-ADB22BE5A376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D8DC2D4-305C-4805-8AB2-ADB22BE5A376}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - WebReferenceSite.Mvc</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/jquery.fancytree/skin-win8/ui.fancytree.min.css" rel="stylesheet">
+    @*Get icons with the above path*@
 </head>
 <body>
     <header>
@@ -23,6 +25,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="FolderContents" asp-action="GetFolderContents">Folder Contents</a>
                         </li>
                     </ul>
                 </div>
@@ -43,6 +48,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/jquery.fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="~/jquery.fancytree/jquery.fancytree-all.min.js"></script>
+    <script src="~/jquery.fancytree/jquery.fancytree.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -5,6 +5,14 @@
     {
       "library": "jquery.fancytree@2.38.2",
       "destination": "wwwroot/jquery.fancytree/"
+    },
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "wwwroot/jqueryui/"
+    },
+    {
+      "library": "summernote@0.8.20",
+      "destination": "wwwroot/lib/summernote/"
     }
   ]
 }
