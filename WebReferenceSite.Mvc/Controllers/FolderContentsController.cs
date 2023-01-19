@@ -42,9 +42,88 @@ namespace WebReferenceSite.Mvc.Controllers
             return new OkObjectResult(node);
         }
 
-        public IActionResult GetFancyTreeNode(string nodeId)
+        public IActionResult GetFancyTreeNode(string key)
         {
-            TreeNodeViewModel node = new TreeNodeViewModel { folder = true, title = "Root", tooltip = "I am root" };
+            TreeNodeViewModel node = new TreeNodeViewModel();
+
+            if (string.IsNullOrEmpty(key))
+            {
+                node = new TreeNodeViewModel
+                {
+                    folder = true,
+                    title = "RootWrapper",
+                    tooltip = "Root Wrapper", //this node is invisible.
+                    children = new List<TreeNodeViewModel>()
+                    {
+                        /*Top visible node*/
+                        new TreeNodeViewModel()
+                        { 
+                            title="Root", 
+                            tooltip = "Top Node",
+                            icon="fancytree-icon", 
+                            key="rootKey", 
+                            folder=true,
+                            children = new List<TreeNodeViewModel>()
+                            {
+                                /*First children in the root node*/
+                                new TreeNodeViewModel()
+                                {
+                                    title="Child 1",
+                                    tooltip = "Sub node",
+                                    icon="fancytree-icon",
+                                    key="da45584173814e7a97804d40e9c7f8de", 
+                                    //href="/FileContents/GetFileContents?id=da45584173814e7a97804d40e9c7f8de",
+                                    folder=true,
+                                    children = new List<TreeNodeViewModel>()
+                                    {
+                                        new TreeNodeViewModel(){ title="Sub Child 1",
+                                            key="aaaaa"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }; 
+            }
+            else
+            {
+                node = new TreeNodeViewModel
+                {
+                    folder = true,
+                    title = "RootWrapper",
+                    tooltip = "Root Wrapper", //this node is invisible.
+                    children = new List<TreeNodeViewModel>()
+                    {
+                        /*Top visible node -- should have no href*/
+                        new TreeNodeViewModel()
+                        {
+                            title="Root",
+                            tooltip = "Top Node",
+                            icon="fancytree-icon",
+                            key="rootKey",
+                            folder=true,
+                            children = new List<TreeNodeViewModel>()
+                            {
+                                /*First children in the root node*/
+                                new TreeNodeViewModel()
+                                {
+                                    title="Root",
+                                    tooltip = "Top Node",
+                                    icon="fancytree-icon",
+                                    key="da45584173814e7a97804d40e9c7f8de", 
+                                    href="/FileContents/GetFancyTreeNode?key=da45584173814e7a97804d40e9c7f8de",
+                                    folder=true,
+                                    children = new List<TreeNodeViewModel>()
+                                    {
+                                        new TreeNodeViewModel(){
+                                            title="asdf", key="aaaaa"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
 
             return new OkObjectResult(node);
         }

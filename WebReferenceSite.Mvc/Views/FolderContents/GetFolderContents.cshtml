@@ -38,17 +38,17 @@ if ($("#nav-tree").length) {
         $("#nav-tree").fancytree({
             tooltip: true,
             source: $.ajax({
-                url: "/FolderContents/GetFancyTreeRoot",
-                dataType: "json"
+                url: "/FolderContents/GetFancyTreeNode",
+                dataType: "json",
             }),
-            minExpandLevel: 1,
+            minExpandLevel: 0,
             postinit: function(isReloading, isError) {
                 this.reactivate();
             },
-            focus: function(event, data) {
-                // Auto-activate focused node after 2 seconds
-                data.node.scheduleAction("activate", 2000);
-            },
+            //focus: function(event, data) {
+            //    // Auto-activate focused node after 2 seconds
+            //    data.node.scheduleAction("activate", 2000);
+            //},
             activate: function(event, data) {
                 var node = data.node;
                 /* Use <a> href and target attributes to load the content:*/
@@ -60,7 +60,17 @@ if ($("#nav-tree").length) {
                   /* or open target in iframe */
                   //$("[name=contentFrame]").attr("src", node.data.href);
                 }
-             }
+             },
+             lazyLoad: function(event, data) {
+              alert(data.node.key);
+               data.result = {
+                url: "/FolderContents/GetFancyTreeNode",
+                data: {
+                  key: data.node.key
+                },
+                cache: true,
+              };
+            },
         });
     }
 </script>

@@ -11,6 +11,7 @@ namespace WebReferenceSite.Mvc.Models
         public string href { get; set; } = string.Empty;
         public string icon { get; set; } = "fancytree-icon";
         public string key { get; set; } = Guid.NewGuid().ToString();
+        public bool lazy { get; set; } = false;
         public string target { get; set; } = string.Empty;
         public string tooltip { get; set; } = string.Empty;
         [JsonIgnore]
