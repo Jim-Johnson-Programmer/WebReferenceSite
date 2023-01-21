@@ -8,6 +8,7 @@ namespace WebReferenceSite.Mvc.Controllers
     //https://wwwendt.de/tech/fancytree/demo/#sample-iframe.html
     public class FolderContentsController : Controller
     {
+        List<TreeNodeViewModel> _nodes = new List<TreeNodeViewModel>();
         //public IActionResult Index()
         //{
         //    return View();
@@ -25,107 +26,68 @@ namespace WebReferenceSite.Mvc.Controllers
 
         public IActionResult GetFancyTreeRoot()
         {
-            TreeNodeViewModel node = new TreeNodeViewModel 
-            { folder = true, title = "Root", tooltip = "I am root", //this node is invisible.
-                children=new List<TreeNodeViewModel>() 
-                {
-                    new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", key="da45584173814e7a97804d40e9c7f8de", href="/FileContents/GetFileContents?id=da45584173814e7a97804d40e9c7f8de"},
-                    new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", folder=true,
-                        children = new List<TreeNodeViewModel>()
-                        {
-                            new TreeNodeViewModel(){title = "Sub child", key="da45584173814e7a97804d40e9c7f8ad"}
-                        }
-                    }
-                }
-            };
+            //TreeNodeViewModel node = new TreeNodeViewModel 
+            //{ folder = true, title = "Root", lazy=true, //this node is invisible.
+            //    children=new List<TreeNodeViewModel>() 
+            //    {
+            //        new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", key="da45584173814e7a97804d40e9c7f8de", href="/FileContents/GetFileContents?id=da45584173814e7a97804d40e9c7f8de"},
+            //        new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", folder=true,
+            //            children = new List<TreeNodeViewModel>()
+            //            {
+            //                new TreeNodeViewModel(){title = "Sub child", key="da45584173814e7a97804d40e9c7f8ad"}
+            //            }
+            //        }
+            //    }
+            //};
 
-            return new OkObjectResult(node);
+            List<TreeNodeViewModel> nodeList = new List<TreeNodeViewModel>()
+           { 
+                new TreeNodeViewModel(){title="Sub Item", lazy=true},
+                new TreeNodeViewModel(){title="Sub Folder", lazy=true, folder=true}
+           };
+
+            return new OkObjectResult(nodeList);
         }
 
         public IActionResult GetFancyTreeNode(string key)
         {
-            TreeNodeViewModel node = new TreeNodeViewModel();
+            /*Load root level items here*/
+            List<TreeNodeViewModel> node = new List<TreeNodeViewModel>()
+            {
+                new TreeNodeViewModel()
+                {
+                    title = "RootWrapper1",
+                    //icon = "fancytree-icon",
+                    lazy = true,
+                    key = "RootWrapperKey1",
+                    //children = new List<TreeNodeViewModel>()
+                },
+                new TreeNodeViewModel()
+                {
+                    title = "RootWrapper2",
+                    //icon = "fancytree-icon",
+                    lazy = true,
+                    key = "RootWrapperKey2",
+                    //children = new List<TreeNodeViewModel>()
+                }
+            };
 
-            if (string.IsNullOrEmpty(key))
+            /*Build child lazy loading for subs of root*/
+            if (!string.IsNullOrEmpty(key))            
             {
-                node = new TreeNodeViewModel
+                node[1].children = new List<TreeNodeViewModel>()
                 {
-                    folder = true,
-                    title = "RootWrapper",
-                    tooltip = "Root Wrapper", //this node is invisible.
-                    children = new List<TreeNodeViewModel>()
+                    new TreeNodeViewModel()
                     {
-                        /*Top visible node*/
-                        new TreeNodeViewModel()
-                        { 
-                            title="Root", 
-                            tooltip = "Top Node",
-                            icon="fancytree-icon", 
-                            key="rootKey", 
-                            folder=true,
-                            children = new List<TreeNodeViewModel>()
-                            {
-                                /*First children in the root node*/
-                                new TreeNodeViewModel()
-                                {
-                                    title="Child 1",
-                                    tooltip = "Sub node",
-                                    icon="fancytree-icon",
-                                    key="da45584173814e7a97804d40e9c7f8de", 
-                                    //href="/FileContents/GetFileContents?id=da45584173814e7a97804d40e9c7f8de",
-                                    folder=true,
-                                    children = new List<TreeNodeViewModel>()
-                                    {
-                                        new TreeNodeViewModel(){ title="Sub Child 1",
-                                            key="aaaaa"}
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }; 
-            }
-            else
-            {
-                node = new TreeNodeViewModel
-                {
-                    folder = true,
-                    title = "RootWrapper",
-                    tooltip = "Root Wrapper", //this node is invisible.
-                    children = new List<TreeNodeViewModel>()
-                    {
-                        /*Top visible node -- should have no href*/
-                        new TreeNodeViewModel()
-                        {
-                            title="Root",
-                            tooltip = "Top Node",
-                            icon="fancytree-icon",
-                            key="rootKey",
-                            folder=true,
-                            children = new List<TreeNodeViewModel>()
-                            {
-                                /*First children in the root node*/
-                                new TreeNodeViewModel()
-                                {
-                                    title="Root",
-                                    tooltip = "Top Node",
-                                    icon="fancytree-icon",
-                                    key="da45584173814e7a97804d40e9c7f8de", 
-                                    href="/FileContents/GetFancyTreeNode?key=da45584173814e7a97804d40e9c7f8de",
-                                    folder=true,
-                                    children = new List<TreeNodeViewModel>()
-                                    {
-                                        new TreeNodeViewModel(){
-                                            title="asdf", key="aaaaa"}
-                                    }
-                                }
-                            }
-                        }
+                        title = "Child 1",
+                        lazy = true,
+                        key = "ChildKey",
+                        //children = new List<TreeNodeViewModel>()
                     }
                 };
             }
 
-            return new OkObjectResult(node);
+            return new OkObjectResult(_nodes);
         }
 
         //Folder add, rename, delete,  move

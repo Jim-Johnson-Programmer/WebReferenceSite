@@ -34,43 +34,83 @@
 </div>
 
 <script type="text/javascript">
-if ($("#nav-tree").length) {
-        $("#nav-tree").fancytree({
-            tooltip: true,
-            source: $.ajax({
-                url: "/FolderContents/GetFancyTreeNode",
-                dataType: "json",
-            }),
-            minExpandLevel: 0,
-            postinit: function(isReloading, isError) {
-                this.reactivate();
-            },
-            //focus: function(event, data) {
-            //    // Auto-activate focused node after 2 seconds
-            //    data.node.scheduleAction("activate", 2000);
-            //},
-            activate: function(event, data) {
-                var node = data.node;
-                /* Use <a> href and target attributes to load the content:*/
-                if( node.data.href ){
-                    /*open in same tab*/
-                    window.location=node.data.href;
-                  /* Open target in NEW Tab */
-                  //window.open(node.data.href, node.data.target);
-                  /* or open target in iframe */
-                  //$("[name=contentFrame]").attr("src", node.data.href);
-                }
-             },
-             lazyLoad: function(event, data) {
-              alert(data.node.key);
-               data.result = {
-                url: "/FolderContents/GetFancyTreeNode",
-                data: {
-                  key: data.node.key
-                },
-                cache: true,
-              };
-            },
-        });
+//if ($("#nav-tree").length) 
+//{
+$(function () {
+      function lazyLoad(event, data) {
+          data.result = $.ajax({
+            url: "/FolderContents/GetFancyTreeNode",//"/FolderContents/GetFancyTreeNode?key=%s"
+            data: {key: data.node.key}
+            //success: function(data) {
+            //display_false()
+            //alert(4 - "returned");
+            //}
+        })
+      //switch (data.node.key) {
+      //  case "ajax":
+      //      data.result = { url: "/FolderContents/GetFancyTreeRoot/" /*, debugDelay: 5000*/ };
+      //    //data.result = $.ajax({
+      //    //  url: "https://wwwendt.de/tech/fancytree/demo/ajax-sub2.json",
+      //    //  dataType: "json"
+      //    //  });
+      //    break;
+      //  case "custom":
+      //    data.result = $.Deferred(function (dfd) {
+      //      setTimeout(function () {
+      //        dfd.resolve([
+      //          { title: "Sub item 1" },
+      //          { title: "Sub item 2" }
+      //        ]);
+      //      }, 1000);
+      //    });
+      //    break;
+      //  case "ajax-error":
+      //    data.result = { url: "not-found.json" };
+      //    break;
+      //  case "custom-error":
+      //    data.result = $.Deferred(function (dfd) {
+      //      setTimeout(function () {
+      //        dfd.reject(new Error("TEST ERROR"));
+      //      }, 1000);
+      //    });
+      //    break;
+      //  default:
+      //    data.result = [];
+      //}
     }
+
+    $("#nav-tree").fancytree
+    ({
+        source: $.ajax({
+            url: "/FolderContents/GetFancyTreeNode"//,
+            //dataType: "json"
+        }),
+        ajax: { debugDelay: 1000 },
+        //minExpandLevel: 0,
+        //postinit: function(isReloading, isError) {
+        //    this.reactivate();
+        //},
+        //focus: function(event, data) {
+        //    // Auto-activate focused node after 2 seconds
+        //    data.node.scheduleAction("activate", 2000);
+        //},
+        activate: function(event, data) 
+        {
+            alert("activated");
+            var node = data.node;
+            /* Use <a> href and target attributes to load the content:*/
+            if( node.data.href )
+            {
+                /*open in same tab*/
+                window.location=node.data.href;
+                /* Open target in NEW Tab */
+                //window.open(node.data.href, node.data.target);
+                /* or open target in iframe */
+                //$("[name=contentFrame]").attr("src", node.data.href);
+            }
+        },
+        lazyLoad: lazyLoad
+    });
+});
+//}
 </script>

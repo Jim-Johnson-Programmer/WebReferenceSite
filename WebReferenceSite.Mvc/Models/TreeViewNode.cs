@@ -11,11 +11,14 @@ namespace WebReferenceSite.Mvc.Models
         public string href { get; set; } = string.Empty;
         public string icon { get; set; } = "fancytree-icon";
         public string key { get; set; } = Guid.NewGuid().ToString();
-        public bool lazy { get; set; } = false;
+        public bool lazy { get; set; } = true;
         public string target { get; set; } = string.Empty;
         public string tooltip { get; set; } = string.Empty;
         [JsonIgnore]
         public string path { get; set; } = string.Empty;
-        public List<TreeNodeViewModel> children { get; set; } = new List<TreeNodeViewModel>();
+        /// <summary>
+        /// Must be null for lazy load to work
+        /// </summary>
+        public List<TreeNodeViewModel> children { get; set; }// = new List<TreeNodeViewModel>();
     }
 }
