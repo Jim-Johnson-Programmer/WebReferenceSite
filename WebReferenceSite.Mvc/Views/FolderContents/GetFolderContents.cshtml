@@ -1,9 +1,12 @@
 ﻿<script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/jqueryui/jquery-ui.js"></script>
-<script src="~/jquery.fancytree/jquery.fancytree-all-deps.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+@*<script src="~/jquery.fancytree/jquery.fancytree-all-deps.js"></script>
 <link href="~/jqueryui" rel="stylesheet" />
-<link href="~/jquery.fancytree/skin-win8-xxl/ui.fancytree.css" rel="stylesheet" />
+<link href="~/jquery.fancytree/skin-win8-xxl/ui.fancytree.css" rel="stylesheet" />*@
 @*<link href="~/jquery.fancytree/skin-win8/ui.fancytree.css" rel="stylesheet" />*@
   
   @{
@@ -20,8 +23,93 @@
     Put PC view here
 *@
 <div  id="PcContents">
-    <div id="nav-tree" data-source="ajax" class="sampletree" style="background-color:red;">
-        @*<div id="nav-tree" data-source="ajax" class="sampletree" style="width:25%;background-color:red;">*@
+    @*<div id="nav-tree" data-source="ajax" class="sampletree" style="background-color:red;">*@
+        <div id="path-tracker" >
+           @* <form id="nav-form" method="post" asp-controller="FolderContents" asp-action="FolderContents">*@
+                <div class="container">
+                    <div class="row">
+                        <div class="col big-box">
+                            <textarea id="textarea-path" rows=3 style="overflow-y:scroll;" class="col"></textarea>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="dropdown col">
+                                      <button type="button" class="btn btn-primary dropdown-toggle col-md-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Navigation Actions
+                                      </button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> Open Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>
+                                        @*<a class="dropdown-item" href="#">Open Folder Selector</a>
+                                         move this to a drop down in the header for these columns, setup as bootstrap dropdown
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-alphabet"></span> Sort by NAME ASC</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span> Sort by NAME DESC</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> Sort by UPDATE ASC</a>
+                                        <a class="dropdown-item" href="#"><span class="	glyphicon glyphicon-sort-by-attributes-alt"></span> Sort by UPDATE DESC</a>*@
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> NEW Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span> NEW File</a>
+@*  move this to the end of each row.                                     
+    <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>*@
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @*</form>*@
+        </div>
+        <div id="folder-contents">
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <td>Type</td>
+                        <td>Title</td>
+                        <td colspan=2>Items Contained</td>
+                        <td>Updated</td>
+                        <td>Created</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td valign="middle">
+                            <a href="#" class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-folder-open"></span> Open Folder
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-link">
+                                Open Folder
+                            </a>
+                        </td>
+                        <td>
+                            <p><span class="glyphicon glyphicon-folder-open"></span> 14 Folders</p>
+                        </td>
+                        <td valign="middle">
+                           <p><span class="glyphicon glyphicon-file"></span> 14 Files</p>
+                        </td>
+                        <td valign="middle">
+                            <p>2019-10-31T03:58:22Z</p>
+                        </td>
+                        <td valign="middle">
+                            <p>2019-10-31T03:58:22Z</p>
+                        </td>
+                        <td valign="middle">
+                            <p>2019-10-31T03:58:22Z</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
   </div>
 @*    <div id="pane-view" style="background-color:aqua;margin-left:25%;"></div>*@
 </div>
@@ -31,86 +119,85 @@
 <div id="MobileContents">
     <div id="PaneView"></div>
 </div>
-</div>
+
 
 <script type="text/javascript">
-//if ($("#nav-tree").length) 
-//{
 $(function () {
-      function lazyLoad(event, data) {
-          data.result = $.ajax({
-            url: "/FolderContents/GetFancyTreeNode",//"/FolderContents/GetFancyTreeNode?key=%s"
-            data: {key: data.node.key}
-            //success: function(data) {
-            //display_false()
-            //alert(4 - "returned");
-            //}
-        })
-      //switch (data.node.key) {
-      //  case "ajax":
-      //      data.result = { url: "/FolderContents/GetFancyTreeRoot/" /*, debugDelay: 5000*/ };
-      //    //data.result = $.ajax({
-      //    //  url: "https://wwwendt.de/tech/fancytree/demo/ajax-sub2.json",
-      //    //  dataType: "json"
-      //    //  });
-      //    break;
-      //  case "custom":
-      //    data.result = $.Deferred(function (dfd) {
-      //      setTimeout(function () {
-      //        dfd.resolve([
-      //          { title: "Sub item 1" },
-      //          { title: "Sub item 2" }
-      //        ]);
-      //      }, 1000);
-      //    });
-      //    break;
-      //  case "ajax-error":
-      //    data.result = { url: "not-found.json" };
-      //    break;
-      //  case "custom-error":
-      //    data.result = $.Deferred(function (dfd) {
-      //      setTimeout(function () {
-      //        dfd.reject(new Error("TEST ERROR"));
-      //      }, 1000);
-      //    });
-      //    break;
-      //  default:
-      //    data.result = [];
-      //}
-    }
+//      function lazyLoad(event, data) {
+//          //if open child of current, allow---else collapse all but current node--self if open then close
+//          //who am i?
+//          data.result = $.ajax({
+//            url: "/FolderContents/GetFancyTreeNode",//"/FolderContents/GetFancyTreeNode?key=%s"
+//            data: {key: data.node.key}
+//            //success: function(data) {
+//            //display_false()
+//            //alert(4 - "returned");
+//            //}
+//        })
+//      //switch (data.node.key) {
+//      //  case "ajax":
+//      //      data.result = { url: "/FolderContents/GetFancyTreeRoot/" /*, debugDelay: 5000*/ };
+//      //    //data.result = $.ajax({
+//      //    //  url: "https://wwwendt.de/tech/fancytree/demo/ajax-sub2.json",
+//      //    //  dataType: "json"
+//      //    //  });
+//      //    break;
+//      //  case "custom":
+//      //    data.result = $.Deferred(function (dfd) {
+//      //      setTimeout(function () {
+//      //        dfd.resolve([
+//      //          { title: "Sub item 1" },
+//      //          { title: "Sub item 2" }
+//      //        ]);
+//      //      }, 1000);
+//      //    });
+//      //    break;
+//      //  case "ajax-error":
+//      //    data.result = { url: "not-found.json" };
+//      //    break;
+//      //  case "custom-error":
+//      //    data.result = $.Deferred(function (dfd) {
+//      //      setTimeout(function () {
+//      //        dfd.reject(new Error("TEST ERROR"));
+//      //      }, 1000);
+//      //    });
+//      //    break;
+//      //  default:
+//      //    data.result = [];
+//      //}
+//    }
 
-    $("#nav-tree").fancytree
-    ({
-        source: $.ajax({
-            url: "/FolderContents/GetFancyTreeNode"//,
-            //dataType: "json"
-        }),
-        ajax: { debugDelay: 1000 },
-        //minExpandLevel: 0,
-        //postinit: function(isReloading, isError) {
-        //    this.reactivate();
-        //},
-        //focus: function(event, data) {
-        //    // Auto-activate focused node after 2 seconds
-        //    data.node.scheduleAction("activate", 2000);
-        //},
-        activate: function(event, data) 
-        {
-            alert("activated");
-            var node = data.node;
-            /* Use <a> href and target attributes to load the content:*/
-            if( node.data.href )
-            {
-                /*open in same tab*/
-                window.location=node.data.href;
-                /* Open target in NEW Tab */
-                //window.open(node.data.href, node.data.target);
-                /* or open target in iframe */
-                //$("[name=contentFrame]").attr("src", node.data.href);
-            }
-        },
-        lazyLoad: lazyLoad
-    });
-});
-//}
+//    $("#nav-tree").fancytree
+//    ({
+//        source: $.ajax({
+//            url: "/FolderContents/GetFancyTreeNode"//,
+//            //dataType: "json"
+//        }),
+//        ajax: { debugDelay: 1000 },
+//        //minExpandLevel: 0,
+//        //postinit: function(isReloading, isError) {
+//        //    this.reactivate();
+//        //},
+//        //focus: function(event, data) {
+//        //    // Auto-activate focused node after 2 seconds
+//        //    data.node.scheduleAction("activate", 2000);
+//        //},
+//        activate: function(event, data) 
+//        {
+//            alert("activated");
+//            var node = data.node;
+//            /* Use <a> href and target attributes to load the content:*/
+//            if( node.data.href )
+//            {
+//                /*open in same tab*/
+//                window.location=node.data.href;
+//                /* Open target in NEW Tab */
+//                //window.open(node.data.href, node.data.target);
+//                /* or open target in iframe */
+//                //$("[name=contentFrame]").attr("src", node.data.href);
+//            }
+//        },
+//        lazyLoad: lazyLoad
+//    });
+//});
 </script>
