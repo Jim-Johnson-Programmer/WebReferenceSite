@@ -33,34 +33,27 @@
                         </div>
                         <div class="col">
                             <div class="row">
-                                <div class="dropdown col">
+                                <div class="dropdown col" style="padding-left:0px;">
                                       <button type="button" class="btn btn-primary dropdown-toggle col-md-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Navigation Actions
                                       </button>
                                       <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> Open Directory</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>
-                                        @*<a class="dropdown-item" href="#">Open Folder Selector</a>
-                                         move this to a drop down in the header for these columns, setup as bootstrap dropdown
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>                                       
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-alphabet"></span> Sort by NAME ASC</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span> Sort by NAME DESC</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> Sort by UPDATE ASC</a>
-                                        <a class="dropdown-item" href="#"><span class="	glyphicon glyphicon-sort-by-attributes-alt"></span> Sort by UPDATE DESC</a>*@
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag View</a>                                       
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> NEW Directory</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span> NEW File</a>
-@*  move this to the end of each row.                                     
-    <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>*@
                                       </div>
                                 </div>
+                            </div>
+                            <div style="margin-right:5%;" class="row">
+                                <input id="tag-input" placeholder="Tag Name" class="col-md-6" />
                             </div>
                         </div>
                     </div>
@@ -71,40 +64,124 @@
             <table class="table table-hover table-striped table-bordered">
                 <thead>
                     <tr>
-                        <td>Type</td>
-                        <td>Title</td>
-                        <td colspan=2>Items Contained</td>
-                        <td>Updated</td>
-                        <td>Created</td>
-                        <td>Actions</td>
+                        <th><span class="glyphicon glyphicon-tags"></span> Group Membership</th>
+                        <th>Has Account Info</th>
+                        <th>
+                            <div>
+                                Title
+                                <div class="dropdown col">
+                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle glyphicon glyphicon-option-vertical" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Sort  
+                                        </button>
+                                        <div class="dropdown-menu">                                        
+                                        <a class="dropdown-item" href="#"><span class="glyphicon  glyphicon-sort-by-alphabet"></span>Sort ASC</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>Sort DESC</a>                              
+                                        </div>
+                                 </div>
+                             </div>
+                        </th>
+                        <th>Contained Items</th>
+                        <th>
+                            Updated
+                            <div class="dropdown col">
+                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle glyphicon glyphicon-option-vertical" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Sort  
+                                        </button>
+                                        <div class="dropdown-menu">                                        
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span>Sort ASC</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span>Sort DESC</a>                              
+                                        </div>
+                            </div>
+                        </th>
+                        <th>
+                            Created
+                            <div class="dropdown col">
+                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle glyphicon glyphicon-option-vertical" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Sort  
+                                        </button>
+                                        <div class="dropdown-menu">                                        
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span>Sort ASC</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span>Sort DESC</a>                              
+                                        </div>
+                            </div>
+                        </th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td valign="middle">
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-folder-open"></span> Open Folder
-                            </a>
+                        <td>
+                             <p></p>
+                        </td>
+                        <td>
+                             <p></p>
                         </td>
                         <td>
                             <a href="#" class="btn btn-link">
-                                Open Folder
+                                Folder Name
                             </a>
                         </td>
                         <td>
                             <p><span class="glyphicon glyphicon-folder-open"></span> 14 Folders</p>
+                            <p><span class="glyphicon glyphicon-file"></span> 14 Files</p>
                         </td>
-                        <td valign="middle">
-                           <p><span class="glyphicon glyphicon-file"></span> 14 Files</p>
-                        </td>
-                        <td valign="middle">
+                        <td>
                             <p>2019-10-31T03:58:22Z</p>
                         </td>
-                        <td valign="middle">
+                        <td>
                             <p>2019-10-31T03:58:22Z</p>
                         </td>
-                        <td valign="middle">
+                        <td>
+                                <div class="dropdown col">
+                                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Actions
+                                      </button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag Management</a>
+                                        <div class="dropdown-divider"></div>                                        
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>
+                                      </div>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">Group1</a></div>
+                             <div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">Group2</a></div>
+                        </td>
+                        <td>
+                            <span style="margin-left:50%;margin-right:50%;" class="glyphicon glyphicon-ok"></span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-link">
+                                Open File
+                            </a>
+                        </td>
+                        <td>
+                            <p><span class="glyphicon glyphicon-font"></span> 14 Characters</p>
+                            <p><span class="glyphicon glyphicon-list"></span> 14 Lines??</p>
+                        </td>
+                        <td>
                             <p>2019-10-31T03:58:22Z</p>
+                        </td>
+                        <td>
+                            <p>2019-10-31T03:58:22Z</p>
+                        </td>
+                        <td>
+                            <div class="dropdown col">
+                                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Actions
+                                      </button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag Management</a>
+                                      <div class="dropdown-divider"></div>  
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-transfer"></span> Move File</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-pencil"></span> Edit File</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-trash"></span> Delete File</a>
+                                      </div>
+                                </div>
                         </td>
                     </tr>
                 </tbody>
