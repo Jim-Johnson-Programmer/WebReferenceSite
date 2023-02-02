@@ -1,8 +1,10 @@
-﻿<script src="~/lib/jquery/dist/jquery.js"></script>
+﻿@model WebReferenceSite.Mvc.Models.FolderContentsViewModel
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/jqueryui/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 @*<script src="~/jquery.fancytree/jquery.fancytree-all-deps.js"></script>
 <link href="~/jqueryui" rel="stylesheet" />
@@ -29,7 +31,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col big-box">
-                            <textarea id="textarea-path" rows=3 style="overflow-y:scroll;" class="col"></textarea>
+                            <textarea id="textarea-path" rows=3 style="overflow-y:scroll;" class="col">@Model.SelectedFolderPath</textarea>
                         </div>
                         <div class="col">
                             <div class="row">
@@ -38,17 +40,18 @@
                                         Navigation Actions
                                       </button>
                                       <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> Open Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> Open Selected Directory</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>                                       
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag View</a>                                       
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders and Files</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> NEW Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span> NEW File</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> CREATE Directory</a>
+                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span> CREATE File</a>
                                       </div>
                                 </div>
                             </div>
@@ -109,43 +112,96 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                             <p></p>
-                        </td>
-                        <td>
-                             <p></p>
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-link">
-                                Folder Name
-                            </a>
-                        </td>
-                        <td>
-                            <p><span class="glyphicon glyphicon-folder-open"></span> 14 Folders</p>
-                            <p><span class="glyphicon glyphicon-file"></span> 14 Files</p>
-                        </td>
-                        <td>
-                            <p>2019-10-31T03:58:22Z</p>
-                        </td>
-                        <td>
-                            <p>2019-10-31T03:58:22Z</p>
-                        </td>
-                        <td>
-                                <div class="dropdown col">
-                                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @foreach (FolderGridItemsViewModel gridRow in @Model.GridRows)
+                    {
+                        @if (gridRow.IsFolder)
+                        {
+                            <tr>
+                                <td>
+                                    <p></p>
+                                </td>
+                                <td>
+                                    <p></p>
+                                </td>
+                                <td>
+                                    <a href=@string.Format("/FolderContents/GetFolderContents?id={0}", gridRow.CurrentId) class="btn btn-link">
+                                        @gridRow.Title
+                                    </a>
+                                </td>
+                                <td>
+                                    <p><span class="glyphicon glyphicon-folder-open"></span> @gridRow.CountOfFoldersContained Folders</p>
+                                    <p><span class="glyphicon glyphicon-file"></span> @gridRow.CountOfFilesContained Files</p>
+                                </td>
+                                <td>
+                                    <p>@gridRow.UpdatedTimeStamp.ToString()</p>
+                                </td>
+                                <td>
+                                    <p>@gridRow.CreatedTimeStamp.ToString()</p>
+                                </td>
+                                <td>
+                                    <div class="dropdown col">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Actions
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag Management</a>
-                                        <div class="dropdown-divider"></div>                                        
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>
-                                      </div>
-                                </div>
-                        </td>
-                    </tr>
+                                        </button>
+                                        <div class="dropdown-menu">                                      
+                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderMove?id={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
+                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?id={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
+                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderDelete?id={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                          <tr>
+                            <td>
+                                @foreach(var groupItem in gridRow.FileGroups)
+                                    {
+                                        <div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">@groupItem.Name</a></div>    
+                                    }
+                                    
+                                @*<div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">Group2</a></div>*@
+                            </td>
+                            <td>
+                                @if(gridRow.FileHasAccountInfo)
+                                    {
+                                        <span style="margin-left:50%;margin-right:50%;" class="glyphicon glyphicon-ok"></span>    
+                                    }                                    
+                            </td>
+                            <td>
+                                <a href=@string.Format("/FileContents/FileContents?id={0}", @gridRow.CurrentId) class="btn btn-link">
+                                    @gridRow.Title
+                                </a>
+                            </td>
+                            <td>
+                                <p><span class="glyphicon glyphicon-font"></span> @gridRow.CountOfCharactersInFile Characters</p>
+                                <p><span class="glyphicon glyphicon-list"></span> @gridRow.CountOfRowsInFile Lines </p>
+                            </td>
+                            <td>
+                                <p>@gridRow.UpdatedTimeStamp.ToString()</p>
+                            </td>
+                            <td>
+                                <p>@gridRow.CreatedTimeStamp.ToString()</p>
+                            </td>
+                            <td>
+                                <div class="dropdown col">
+                                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Actions
+                                          </button>
+                                          <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag Management</a>
+                                          <div class="dropdown-divider"></div>  
+                                            <a class="dropdown-item" href="@string.Format("/FolderContents/FolderMove?id={0}", @gridRow.CurrentId)"><span class="glyphicon glyphicon-transfer"></span> Move File</a>
+                                            <a class="dropdown-item" href="@string.Format("/FolderContents/FolderCreateRename?id={0}", @gridRow.CurrentId)"><span class="glyphicon glyphicon-pencil"></span> Edit File</a>
+                                            <a class="dropdown-item" href="@string.Format("/FolderContents/FolderDelete?id={0}", @gridRow.CurrentId)"><span class="glyphicon glyphicon-trash"></span> Delete File</a>
+                                          </div>
+                                    </div>
+                            </td>
+                        </tr>   
+                        }
+                    }
+@*                    
                     <tr>
                         <td>
                             <div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">Group1</a></div>
@@ -184,7 +240,7 @@
                                 </div>
                         </td>
                     </tr>
-                </tbody>
+*@                </tbody>
             </table>
         </div>
   </div>

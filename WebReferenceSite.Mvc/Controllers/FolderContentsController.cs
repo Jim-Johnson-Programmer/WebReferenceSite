@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using WebReferenceSite.Mvc.Models;
 
@@ -8,110 +9,173 @@ namespace WebReferenceSite.Mvc.Controllers
     //https://wwwendt.de/tech/fancytree/demo/#sample-iframe.html
     public class FolderContentsController : Controller
     {
-        List<TreeNodeViewModel> _nodes = new List<TreeNodeViewModel>();
+        //List<TreeNodeViewModel> _nodes = new List<TreeNodeViewModel>();
         //public IActionResult Index()
         //{
         //    return View();
         //}
 
-        public IActionResult GetFolderContents()
+        public IActionResult GetFolderContents(string id)
         {
-            return View();
+            FolderContentsViewModel folderContentsViewModel = LoadFolderContentsViewModel();            
+
+            return View(folderContentsViewModel);
         }
 
-        public IActionResult GetAcctFolderContents()
+        private FolderContentsViewModel LoadFolderContentsViewModel()
         {
-            return View();
-        }
+            FolderContentsViewModel viewModel = new FolderContentsViewModel();
+            viewModel.CurrentFolderId = Guid.NewGuid().ToString();
+            viewModel.SelectedFolderPath = "Root\n/Folder1\n/Folder2";
 
-        public IActionResult GetFancyTreeRoot()
-        {
-            //TreeNodeViewModel node = new TreeNodeViewModel 
-            //{ folder = true, title = "Root", lazy=true, //this node is invisible.
-            //    children=new List<TreeNodeViewModel>() 
-            //    {
-            //        new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", key="da45584173814e7a97804d40e9c7f8de", href="/FileContents/GetFileContents?id=da45584173814e7a97804d40e9c7f8de"},
-            //        new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", folder=true,
-            //            children = new List<TreeNodeViewModel>()
-            //            {
-            //                new TreeNodeViewModel(){title = "Sub child", key="da45584173814e7a97804d40e9c7f8ad"}
-            //            }
-            //        }
-            //    }
-            //};
-
-            List<TreeNodeViewModel> nodeList = new List<TreeNodeViewModel>()
-           { 
-                new TreeNodeViewModel(){title="Sub Item", lazy=true},
-                new TreeNodeViewModel(){title="Sub Folder", lazy=true, folder=true}
-           };
-
-            return new OkObjectResult(nodeList);
-        }
-
-        public IActionResult GetFancyTreeNode(string key)
-        {
-            /*Load root level items here*/
-            List<TreeNodeViewModel> node = new List<TreeNodeViewModel>()
+            viewModel.GridRows = new List<FolderGridItemsViewModel>() 
             {
-                new TreeNodeViewModel()
+                new FolderGridItemsViewModel() 
                 {
-                    title = "RootWrapper1",
-                    //icon = "fancytree-icon",
-                    lazy = true,
-                    key = "RootWrapperKey1",
-                    //children = new List<TreeNodeViewModel>()
+                     CurrentId = Guid.NewGuid().ToString(),
+                     IsFolder = true,
+                     Title = "FolderXXX",
+                     Url = "",
+                     CountOfFoldersContained=10,
+                     CountOfFilesContained=5,
+                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
+                     UpdatedTimeStamp = DateTime.Now,
+                },                
+                new FolderGridItemsViewModel()
+                {
+                     CurrentId = Guid.NewGuid().ToString(),
+                     IsFolder = true,
+                     Title = "FolderYY",
+                     Url = "",
+                     CountOfFoldersContained=11,
+                     CountOfFilesContained=15,
+                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
+                     UpdatedTimeStamp = DateTime.Now,
                 },
-                new TreeNodeViewModel()
+                new FolderGridItemsViewModel()
                 {
-                    title = "RootWrapper2",
-                    //icon = "fancytree-icon",
-                    lazy = true,
-                    key = "RootWrapperKey2",
-                    //children = new List<TreeNodeViewModel>()
+                     CurrentId = Guid.NewGuid().ToString(),
+                     FileGroups = new List<FileGroup>()
+                     {
+                        new FileGroup(){Id=Guid.NewGuid().ToString(), Name="GroupAA"},
+                        new FileGroup(){Id=Guid.NewGuid().ToString(), Name="GroupBB"}
+                     },
+                     IsFolder = false,
+                     FileHasAccountInfo = true,
+                     Title = "FileYY",
+                     Url = "",
+                     CountOfCharactersInFile=9,
+                     CountOfRowsInFile=16,
+                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
+                     UpdatedTimeStamp = DateTime.Now,
+                },
+                new FolderGridItemsViewModel()
+                {
+                     CurrentId = Guid.NewGuid().ToString(),
+                     IsFolder = false,
+                     FileHasAccountInfo = false,
+                     Title = "FileDD",
+                     Url = "",
+                     CountOfCharactersInFile=9,
+                     CountOfRowsInFile=16,
+                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
+                     UpdatedTimeStamp = DateTime.Now,
                 }
             };
 
-            /*Build child lazy loading for subs of root*/
-            if (!string.IsNullOrEmpty(key))            
-            {
-                node[1].children = new List<TreeNodeViewModel>()
-                {
-                    new TreeNodeViewModel()
-                    {
-                        title = "Child 1",
-                        lazy = true,
-                        key = "ChildKey",
-                        //children = new List<TreeNodeViewModel>()
-                    }
-                };
-            }
-
-            return new OkObjectResult(_nodes);
+            return viewModel;
         }
+
+        //public IActionResult GetFancyTreeRoot()
+        //{
+        //    //TreeNodeViewModel node = new TreeNodeViewModel 
+        //    //{ folder = true, title = "Root", lazy=true, //this node is invisible.
+        //    //    children=new List<TreeNodeViewModel>() 
+        //    //    {
+        //    //        new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", key="da45584173814e7a97804d40e9c7f8de", href="/FileContents/GetFileContents?id=da45584173814e7a97804d40e9c7f8de"},
+        //    //        new TreeNodeViewModel(){ title="Child1", icon="fancytree-icon", folder=true,
+        //    //            children = new List<TreeNodeViewModel>()
+        //    //            {
+        //    //                new TreeNodeViewModel(){title = "Sub child", key="da45584173814e7a97804d40e9c7f8ad"}
+        //    //            }
+        //    //        }
+        //    //    }
+        //    //};
+
+        //    List<TreeNodeViewModel> nodeList = new List<TreeNodeViewModel>()
+        //   { 
+        //        new TreeNodeViewModel(){title="Sub Item", lazy=true},
+        //        new TreeNodeViewModel(){title="Sub Folder", lazy=true, folder=true}
+        //   };
+
+        //    return new OkObjectResult(nodeList);
+        //}
+
+        //public IActionResult GetFancyTreeNode(string key)
+        //{
+        //    /*Load root level items here*/
+        //    List<TreeNodeViewModel> node = new List<TreeNodeViewModel>()
+        //    {
+        //        new TreeNodeViewModel()
+        //        {
+        //            title = "RootWrapper1",
+        //            //icon = "fancytree-icon",
+        //            lazy = true,
+        //            key = "RootWrapperKey1",
+        //            //children = new List<TreeNodeViewModel>()
+        //        },
+        //        new TreeNodeViewModel()
+        //        {
+        //            title = "RootWrapper2",
+        //            //icon = "fancytree-icon",
+        //            lazy = true,
+        //            key = "RootWrapperKey2",
+        //            //children = new List<TreeNodeViewModel>()
+        //        }
+        //    };
+
+        //    /*Build child lazy loading for subs of root*/
+        //    if (!string.IsNullOrEmpty(key))            
+        //    {
+        //        node[1].children = new List<TreeNodeViewModel>()
+        //        {
+        //            new TreeNodeViewModel()
+        //            {
+        //                title = "Child 1",
+        //                lazy = true,
+        //                key = "ChildKey",
+        //                //children = new List<TreeNodeViewModel>()
+        //            }
+        //        };
+        //    }
+
+        //    return new OkObjectResult(_nodes);
+        //}
 
         //Folder add, rename, delete,  move
-        #region Folder Mangement
-        public IActionResult FolderAdd()
+        #region Folder Create/Edit/Delete
+        public IActionResult FolderCreateRename(string parentId, string id)
         {
             return View();
         }
 
-        public IActionResult FolderRename()
+        public IActionResult FolderDelete(string id)
         {
             return View();
         }
 
-        public IActionResult FolderDelete()
+        public IActionResult FolderMove(string parentId, string id)
         {
             return View();
         }
 
-        public IActionResult FolderMove()
+        public IActionResult FolderSelection(string id)
         {
             return View();
         }
+        #endregion Folder Create/Edit/Delete
 
+        #region Folder Action Validations
         public IActionResult FolderAddVerify()
         {
             return View();
@@ -131,49 +195,6 @@ namespace WebReferenceSite.Mvc.Controllers
         {
             return View();
         }
-        #endregion Folder Mangement
-
-        //File Add, Rename, Delete, Move
-        #region File Mangement
-        public IActionResult FileAdd()
-        {
-            return View();
-        }
-
-        public IActionResult FileRename()
-        {
-            return View();
-        }
-
-        public IActionResult FileDelete()
-        {
-            return View();
-        }
-
-        public IActionResult FileMove()
-        {
-            return View();
-        }
-
-        public IActionResult FileAddVerify()
-        {
-            return View();
-        }
-
-        public IActionResult FileRenameVerify()
-        {
-            return View();
-        }
-
-        public IActionResult FileDeleteVerify()
-        {
-            return View();
-        }
-
-        public IActionResult FileMoveVerify()
-        {
-            return View();
-        }
-        #endregion File Mangement
+        #endregion Folder Action Validations
     }
 }
