@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebReferenceSite.Mvc.Models
+namespace WebReferenceSite.Mvc.Models.ViewModels
 {
     public class FileContentsViewModel
     {

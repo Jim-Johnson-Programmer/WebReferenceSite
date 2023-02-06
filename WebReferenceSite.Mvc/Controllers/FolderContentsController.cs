@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using WebReferenceSite.Mvc.Models;
+using WebReferenceSite.Mvc.Models.ViewModels;
+using Serilog;
 
 namespace WebReferenceSite.Mvc.Controllers
 {
@@ -9,6 +10,10 @@ namespace WebReferenceSite.Mvc.Controllers
     //https://wwwendt.de/tech/fancytree/demo/#sample-iframe.html
     public class FolderContentsController : Controller
     {
+        public FolderContentsController()
+        {
+
+        }
         //List<TreeNodeViewModel> _nodes = new List<TreeNodeViewModel>();
         //public IActionResult Index()
         //{
@@ -17,6 +22,7 @@ namespace WebReferenceSite.Mvc.Controllers
 
         public IActionResult GetFolderContents(string id)
         {
+            Log.Information("aaa");
             FolderContentsViewModel folderContentsViewModel = LoadFolderContentsViewModel();            
 
             return View(folderContentsViewModel);
@@ -156,7 +162,21 @@ namespace WebReferenceSite.Mvc.Controllers
         #region Folder Create/Edit/Delete
         public IActionResult FolderCreateRename(string parentId, string id)
         {
-            return View();
+            FolderCreateRenameViewModel viewModel = new FolderCreateRenameViewModel();
+            viewModel.CurrentParentId = parentId;
+
+            return View(viewModel);
+        }
+
+        public IActionResult FolderCreateRename(FolderCreateRenameViewModel inputViewModel)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(inputViewModel);
+            }
+
+            string routeValues = string.Format("");
+            return RedirectToAction("FileContents", "FileContents", routeValues);
         }
 
         public IActionResult FolderDelete(string id)

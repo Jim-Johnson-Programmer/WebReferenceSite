@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using WebReferenceSite.Mvc.Models;
+using WebReferenceSite.Mvc.Models.ViewModels;
+using Serilog;
 
 namespace WebReferenceSite.Mvc.Controllers
 {
@@ -16,6 +17,7 @@ namespace WebReferenceSite.Mvc.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            logger.LogInformation("asdf");
         }
 
         public IActionResult Index()
@@ -28,10 +30,10 @@ namespace WebReferenceSite.Mvc.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

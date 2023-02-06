@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebReferenceSite.Mvc.Models;
+using WebReferenceSite.Mvc.Models.ViewModels;
 
 namespace WebReferenceSite.Mvc.Controllers
 {
@@ -7,8 +7,9 @@ namespace WebReferenceSite.Mvc.Controllers
     {
         public IActionResult FileContents(string id)
         {
-            var aa = id;
-            return View();
+            FileContentsViewModel fileContentsViewModel = new FileContentsViewModel();
+
+            return View(fileContentsViewModel);
         }
 
         [HttpPost]

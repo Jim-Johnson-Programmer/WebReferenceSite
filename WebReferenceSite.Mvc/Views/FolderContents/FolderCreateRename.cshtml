@@ -1,6 +1,23 @@
-﻿@*
+﻿@model WebReferenceSite.Mvc.Models.ViewModels.FolderCreateRenameViewModel
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/jqueryui/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
 Folder Create and Rename
+
+<form id="createEditForm" asp-controller="FolderContents" asp-action="FolderCreateRename">
+<textarea id="parentFolderPath"></textarea>
+<input id="parentFolderId" type="text" />
+<input id="currentFolderName" type="text" />
+<input id="currentFolderId" type="text" />
+<a id="cancelLinkButton" href="" class="btn btn-primary">cancel</a>
+<button type="submit">Submit</button>
+</form>

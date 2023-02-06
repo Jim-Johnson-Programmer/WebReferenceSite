@@ -1,4 +1,5 @@
-﻿@model WebReferenceSite.Mvc.Models.FolderContentsViewModel
+﻿@using WebReferenceSite.Mvc.Models.ViewModels
+@model WebReferenceSite.Mvc.Models.ViewModels.FolderContentsViewModel
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/jqueryui/jquery-ui.js"></script>
@@ -27,7 +28,6 @@
 <div  id="PcContents">
     @*<div id="nav-tree" data-source="ajax" class="sampletree" style="background-color:red;">*@
         <div id="path-tracker" >
-           @* <form id="nav-form" method="post" asp-controller="FolderContents" asp-action="FolderContents">*@
                 <div class="container">
                     <div class="row">
                         <div class="col big-box">
@@ -40,18 +40,18 @@
                                         Navigation Actions
                                       </button>
                                       <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> Open Selected Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>                                       
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span> Open Selected Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}", @Model.ParentFolderId)><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}", @Model.RootFolderId)><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>                                       
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag View</a>                                       
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders and Files</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}&only=all", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders and Files</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}&only=folders", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}&only=files", @Model.CurrentFolderId)><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-folder-open"></span> CREATE Directory</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-file"></span> CREATE File</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?id={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-folder-open"></span> CREATE Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FileContents/FileContents?id={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-file"></span> CREATE File</a>
                                       </div>
                                 </div>
                             </div>
@@ -61,7 +61,6 @@
                         </div>
                     </div>
                 </div>
-            @*</form>*@
         </div>
         <div id="folder-contents">
             <table class="table table-hover table-striped table-bordered">
@@ -201,50 +200,10 @@
                         </tr>   
                         }
                     }
-@*                    
-                    <tr>
-                        <td>
-                            <div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">Group1</a></div>
-                             <div><a style="padding-top:0%; padding-bottom:0%" href="#" class="btn btn-link">Group2</a></div>
-                        </td>
-                        <td>
-                            <span style="margin-left:50%;margin-right:50%;" class="glyphicon glyphicon-ok"></span>
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-link">
-                                Open File
-                            </a>
-                        </td>
-                        <td>
-                            <p><span class="glyphicon glyphicon-font"></span> 14 Characters</p>
-                            <p><span class="glyphicon glyphicon-list"></span> 14 Lines??</p>
-                        </td>
-                        <td>
-                            <p>2019-10-31T03:58:22Z</p>
-                        </td>
-                        <td>
-                            <p>2019-10-31T03:58:22Z</p>
-                        </td>
-                        <td>
-                            <div class="dropdown col">
-                                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Actions
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag Management</a>
-                                      <div class="dropdown-divider"></div>  
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-transfer"></span> Move File</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-pencil"></span> Edit File</a>
-                                        <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-trash"></span> Delete File</a>
-                                      </div>
-                                </div>
-                        </td>
-                    </tr>
-*@                </tbody>
+                </tbody>
             </table>
         </div>
   </div>
-@*    <div id="pane-view" style="background-color:aqua;margin-left:25%;"></div>*@
 </div>
 @*
     Put mobile view here
