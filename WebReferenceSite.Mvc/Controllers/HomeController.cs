@@ -17,7 +17,6 @@ namespace WebReferenceSite.Mvc.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            logger.LogInformation("asdf");
         }
 
         public IActionResult Index()

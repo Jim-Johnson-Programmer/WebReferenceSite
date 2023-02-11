@@ -20,11 +20,13 @@ namespace WebReferenceSite.Mvc
         public static void Main(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: false, reloadOnChange: true)
             .Build();
 
             Log.Logger = new LoggerConfiguration().ReadFrom.
                          Configuration(configuration).CreateLogger();
+
+            Log.Logger.Information("appsettings file used is =" + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
 
             CreateHostBuilder(args).Build().Run();
         }
