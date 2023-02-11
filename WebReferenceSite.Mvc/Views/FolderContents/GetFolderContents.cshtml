@@ -40,18 +40,18 @@
                                         Navigation Actions
                                       </button>
                                       <div class="dropdown-menu">
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span> Open Selected Directory</a>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}", @Model.ParentFolderId)><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}", @Model.RootFolderId)><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>                                       
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span> Open Selected Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}", @Model.ParentFolderId)><span class="glyphicon glyphicon-level-up"></span> Open Parent Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId=1", @Model.RootFolderId)><span class="glyphicon glyphicon-level-up"></span> Open Root Directory</a>                                       
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-tags"></span> Tag View</a>                                       
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}&only=all", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders and Files</a>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}&only=folders", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?id={0}&only=files", @Model.CurrentFolderId)><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}&only=all", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders and Files</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}&only=folders", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}&only=files", @Model.CurrentFolderId)><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?id={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-folder-open"></span> CREATE Directory</a>
-                                        <a class="dropdown-item" href=@string.Format("/FileContents/FileContents?id={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-file"></span> CREATE File</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?folderId={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-folder-open"></span> CREATE Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FileContents/FileContents?folderId={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-file"></span> CREATE File</a>
                                       </div>
                                 </div>
                             </div>
@@ -70,13 +70,13 @@
                         <th>Has Account Info</th>
                         <th>
                             <div>
-                                Title
+                                Name
                                 <div class="dropdown col">
                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle glyphicon glyphicon-option-vertical" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           Sort  
                                         </button>
                                         <div class="dropdown-menu">                                        
-                                        <a class="dropdown-item" href="#"><span class="glyphicon  glyphicon-sort-by-alphabet"></span>Sort ASC</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}", @Model.ParentFolderId)><span class="glyphicon  glyphicon-sort-by-alphabet"></span>Sort ASC</a>
                                         <a class="dropdown-item" href="#"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>Sort DESC</a>                              
                                         </div>
                                  </div>
@@ -123,8 +123,8 @@
                                     <p></p>
                                 </td>
                                 <td>
-                                    <a href=@string.Format("/FolderContents/GetFolderContents?id={0}", gridRow.CurrentId) class="btn btn-link">
-                                        @gridRow.Title
+                                    <a href=@string.Format("/FolderContents/GetFolderContents?folderId={0}", gridRow.CurrentId) class="btn btn-link">
+                                        @gridRow.FolderName
                                     </a>
                                 </td>
                                 <td>
@@ -143,9 +143,9 @@
                                             Actions
                                         </button>
                                         <div class="dropdown-menu">                                      
-                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderMove?id={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
-                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?id={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
-                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderDelete?id={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>
+                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderMove?folderId={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-transfer"></span> Move Directory</a>
+                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?folderId={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-pencil"></span> Rename Directory</a>
+                                            <a class="dropdown-item" href=@string.Format("/FolderContents/FolderDelete?folderId={0}", @gridRow.CurrentId)><span class="glyphicon glyphicon-trash"></span> Delete Directory</a>
                                         </div>
                                     </div>
                                 </td>
@@ -169,8 +169,8 @@
                                     }                                    
                             </td>
                             <td>
-                                <a href=@string.Format("/FileContents/FileContents?id={0}", @gridRow.CurrentId) class="btn btn-link">
-                                    @gridRow.Title
+                                <a href=@string.Format("/FileContents/FileContents?parentFolderId={0}", @gridRow.CurrentId) class="btn btn-link">
+                                    @gridRow.FolderName
                                 </a>
                             </td>
                             <td>

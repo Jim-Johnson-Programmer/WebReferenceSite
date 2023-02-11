@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using WebReferenceSite.Mvc.Models.ViewModels;
 using Serilog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using WebReferenceSite.Mvc.Repositories;
+using Serilog.Extensions.Logging;
+using WebReferenceSite.Mvc.Models.RepositoryModels;
+using WebReferenceSite.Mvc.Services;
 
 namespace WebReferenceSite.Mvc.Controllers
 {
@@ -10,87 +16,104 @@ namespace WebReferenceSite.Mvc.Controllers
     //https://wwwendt.de/tech/fancytree/demo/#sample-iframe.html
     public class FolderContentsController : Controller
     {
-        public FolderContentsController()
-        {
+        private readonly ILogger<FolderContentsController> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString = string.Empty;
+        private IFolderService _folderService;
+        private ILoggerFactory _loggerFactory;
 
+        public FolderContentsController(ILogger<FolderContentsController> logger, IConfiguration configuration, ILoggerFactory loggerFactory)
+        {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");            
+            _logger = logger;
+            _loggerFactory = loggerFactory;
+
+            if (string.IsNullOrEmpty(_connectionString)) throw new ArgumentNullException("Connection string not found");
+
+            _folderService = new FolderService(_loggerFactory, _connectionString);
         }
-        //List<TreeNodeViewModel> _nodes = new List<TreeNodeViewModel>();
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
 
-        public IActionResult GetFolderContents(string id)
+        public IActionResult GetFolderContents(string folderId, string sortColumnId)
         {
-            Log.Information("aaa");
-            FolderContentsViewModel folderContentsViewModel = LoadFolderContentsViewModel();            
+            //FolderContentsViewModel folderContentsViewModel = LoadFolderContentsViewModel();
+            FolderContentsViewModel folderContentsViewModel = new FolderContentsViewModel();
+
+            folderId = folderId != null ? folderId : "1";
+            sortColumnId = sortColumnId != null ? sortColumnId : "1";
+
+            folderContentsViewModel = _folderService.GetFolderViewModelItem(folderId, sortColumnId, true);
+            //folderContentsViewModel.CurrentFolderId = parentFolderId !=null ? parentFolderId : "1";
+            //folderContentsViewModel.SortColumnId = sortColumnId != null ? sortColumnId: "1";
+                        
+            //folderContentsViewModel.GridRows = _folderService.GetFolderGridRows(parentFolderId, sortColumnId, true);
 
             return View(folderContentsViewModel);
         }
 
-        private FolderContentsViewModel LoadFolderContentsViewModel()
-        {
-            FolderContentsViewModel viewModel = new FolderContentsViewModel();
-            viewModel.CurrentFolderId = Guid.NewGuid().ToString();
-            viewModel.SelectedFolderPath = "Root\n/Folder1\n/Folder2";
+        //private FolderContentsViewModel LoadFolderContentsViewModel()
+        //{
+        //    FolderContentsViewModel viewModel = new FolderContentsViewModel();
+        //    viewModel.CurrentFolderId = Guid.NewGuid().ToString();
+        //    viewModel.SelectedFolderPath = "Root\n/Folder1\n/Folder2";
 
-            viewModel.GridRows = new List<FolderGridItemsViewModel>() 
-            {
-                new FolderGridItemsViewModel() 
-                {
-                     CurrentId = Guid.NewGuid().ToString(),
-                     IsFolder = true,
-                     Title = "FolderXXX",
-                     Url = "",
-                     CountOfFoldersContained=10,
-                     CountOfFilesContained=5,
-                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
-                     UpdatedTimeStamp = DateTime.Now,
-                },                
-                new FolderGridItemsViewModel()
-                {
-                     CurrentId = Guid.NewGuid().ToString(),
-                     IsFolder = true,
-                     Title = "FolderYY",
-                     Url = "",
-                     CountOfFoldersContained=11,
-                     CountOfFilesContained=15,
-                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
-                     UpdatedTimeStamp = DateTime.Now,
-                },
-                new FolderGridItemsViewModel()
-                {
-                     CurrentId = Guid.NewGuid().ToString(),
-                     FileGroups = new List<FileGroup>()
-                     {
-                        new FileGroup(){Id=Guid.NewGuid().ToString(), Name="GroupAA"},
-                        new FileGroup(){Id=Guid.NewGuid().ToString(), Name="GroupBB"}
-                     },
-                     IsFolder = false,
-                     FileHasAccountInfo = true,
-                     Title = "FileYY",
-                     Url = "",
-                     CountOfCharactersInFile=9,
-                     CountOfRowsInFile=16,
-                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
-                     UpdatedTimeStamp = DateTime.Now,
-                },
-                new FolderGridItemsViewModel()
-                {
-                     CurrentId = Guid.NewGuid().ToString(),
-                     IsFolder = false,
-                     FileHasAccountInfo = false,
-                     Title = "FileDD",
-                     Url = "",
-                     CountOfCharactersInFile=9,
-                     CountOfRowsInFile=16,
-                     CreatedTimeStamp = DateTime.Now.AddDays(-1),
-                     UpdatedTimeStamp = DateTime.Now,
-                }
-            };
+        //    viewModel.GridRows = new List<FolderGridItemsViewModel>() 
+        //    {
+        //        new FolderGridItemsViewModel() 
+        //        {
+        //             CurrentId = Guid.NewGuid().ToString(),
+        //             IsFolder = true,
+        //             FolderName = "FolderXXX",
+        //             Url = "",
+        //             CountOfFoldersContained=10,
+        //             CountOfFilesContained=5,
+        //             CreatedTimeStamp = DateTime.Now.AddDays(-1),
+        //             UpdatedTimeStamp = DateTime.Now,
+        //        },                
+        //        new FolderGridItemsViewModel()
+        //        {
+        //             CurrentId = Guid.NewGuid().ToString(),
+        //             IsFolder = true,
+        //             FolderName = "FolderYY",
+        //             Url = "",
+        //             CountOfFoldersContained=11,
+        //             CountOfFilesContained=15,
+        //             CreatedTimeStamp = DateTime.Now.AddDays(-1),
+        //             UpdatedTimeStamp = DateTime.Now,
+        //        },
+        //        new FolderGridItemsViewModel()
+        //        {
+        //             CurrentId = Guid.NewGuid().ToString(),
+        //             FileGroups = new List<FileGroup>()
+        //             {
+        //                new FileGroup(){Id=Guid.NewGuid().ToString(), Name="GroupAA"},
+        //                new FileGroup(){Id=Guid.NewGuid().ToString(), Name="GroupBB"}
+        //             },
+        //             IsFolder = false,
+        //             FileHasAccountInfo = true,
+        //             FolderName = "FileYY",
+        //             Url = "",
+        //             CountOfCharactersInFile=9,
+        //             CountOfRowsInFile=16,
+        //             CreatedTimeStamp = DateTime.Now.AddDays(-1),
+        //             UpdatedTimeStamp = DateTime.Now,
+        //        },
+        //        new FolderGridItemsViewModel()
+        //        {
+        //             CurrentId = Guid.NewGuid().ToString(),
+        //             IsFolder = false,
+        //             FileHasAccountInfo = false,
+        //             FolderName = "FileDD",
+        //             Url = "",
+        //             CountOfCharactersInFile=9,
+        //             CountOfRowsInFile=16,
+        //             CreatedTimeStamp = DateTime.Now.AddDays(-1),
+        //             UpdatedTimeStamp = DateTime.Now,
+        //        }
+        //    };
 
-            return viewModel;
-        }
+        //    return viewModel;
+        //}
 
         //public IActionResult GetFancyTreeRoot()
         //{

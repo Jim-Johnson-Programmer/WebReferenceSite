@@ -9,7 +9,7 @@ namespace WebReferenceSite.Mvc.Models.ViewModels
         public string CurrentId { get; set; } = string.Empty;
         public bool IsFolder { get; set; }
         public bool FileHasAccountInfo { get; set; }
-        public string Title { get; set; } = string.Empty;
+        public string FolderName { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
         public DateTime UpdatedTimeStamp { get; set; } = DateTime.Now;
         public DateTime CreatedTimeStamp { get; set; } = DateTime.Now;
