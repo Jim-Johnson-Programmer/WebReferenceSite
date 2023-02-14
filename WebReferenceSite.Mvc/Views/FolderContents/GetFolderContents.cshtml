@@ -50,8 +50,9 @@
                                         <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}&only=folders", @Model.CurrentFolderId)><span class="glyphicon glyphicon-folder-open"></span><span class="glyphicon glyphicon-filter"></span> Show Folders ONLY</a>
                                         <a class="dropdown-item" href=@string.Format("/FolderContents/GetFolderContents?folderId={0}&only=files", @Model.CurrentFolderId)><span class="glyphicon glyphicon-file"></span><span class="glyphicon glyphicon-filter"></span> Show Files ONLY</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?folderId={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-folder-open"></span> CREATE Directory</a>
-                                        <a class="dropdown-item" href=@string.Format("/FileContents/FileContents?folderId={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-file"></span> CREATE File</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?folderId=0&parentId={0}", @Model.ParentFolderId)><span class="glyphicon glyphicon-folder-open"></span> CREATE Sibling Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FolderContents/FolderCreateRename?folderId={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-folder-open"></span> RENAME Current Directory</a>
+                                        <a class="dropdown-item" href=@string.Format("/FileContents/FileContents?folderId={0}&parentId={1}", @Model.CurrentFolderId, @Model.ParentFolderId)><span class="glyphicon glyphicon-file"></span> CREATE File</a> 
                                       </div>
                                 </div>
                             </div>

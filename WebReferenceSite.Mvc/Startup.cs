@@ -6,8 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WebReferenceSite.Mvc.Repositories.DapperWrapper;
 
 namespace WebReferenceSite.Mvc
 {
@@ -23,6 +26,11 @@ namespace WebReferenceSite.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddScoped<IDbExecutorFactory, SqlExecutorFactory>(t => new SqlExecutorFactory(connectionString));
+            services.AddScoped<IDbConnection, SqlConnection>(t=> new SqlConnection(connectionString));
+            services.AddScoped<IDbExecutor, SqlExecutor>();
+
             services.AddControllersWithViews();
         }
 
@@ -39,6 +47,9 @@ namespace WebReferenceSite.Mvc
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //app.ApplicationServices.CreateScope<IApplicationBuilder,>();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

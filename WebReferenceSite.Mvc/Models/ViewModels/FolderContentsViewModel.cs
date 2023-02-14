@@ -17,17 +17,11 @@ namespace WebReferenceSite.Mvc.Models.ViewModels
         public List<FolderGridItemsViewModel> GridRows { get; set; } = new List<FolderGridItemsViewModel>();
         public string SortColumnId { get; internal set; }
 
-        public bool LoadFolder(Folder folder)
+        public void LoadFolder(Folder folder)
         {
-            bool status = true;
-
             CurrentFolderId = folder.FolderId.ToString();
             CurrentFolderName = folder.FolderName;
-            ParentFolderId = folder.ParentFolderId.ToString();
-            //RootFolderId = folder.
-            //SelectedFolderPath = 
-
-            return status;
+            ParentFolderId = folder.ParentFolderId == 0 ? "1" : folder.ParentFolderId.ToString();
         }
     }
 }

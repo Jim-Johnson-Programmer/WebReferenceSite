@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <Folder Include="Regression_Selenium\TestingDatabase\" />
+    <Folder Include="Unit\LIVE\" />
   </ItemGroup>
 
 </Project>

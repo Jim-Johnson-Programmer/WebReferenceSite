@@ -13,11 +13,32 @@
 }
 Folder Create and Rename
 
-<form id="createEditForm" asp-controller="FolderContents" asp-action="FolderCreateRename">
-<textarea id="parentFolderPath"></textarea>
-<input id="parentFolderId" type="text" />
-<input id="currentFolderName" type="text" />
-<input id="currentFolderId" type="text" />
-<a id="cancelLinkButton" href="" class="btn btn-primary">cancel</a>
-<button type="submit">Submit</button>
-</form>
+<div id="PcContents">
+    <section id="" class="container">
+        <form id="createEditForm" asp-controller="FolderContents" asp-action="FolderCreateRename">
+            <div id="error-message-summary"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="textarea-path">Parent Folder Path</label>
+                        <textarea id="textareaPath" rows=3 style="overflow-y:scroll;" class="form-control" disabled>@Model.ParentFolderPath</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="parentFolderId">Parent Folder ID</label>
+                        <input id="parentFolderId" class="form-control" type="text" asp-for="CurrentParentId" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Current Folder Name</label>                        
+                        <input id="currentFolderName" class="form-control" type="text" asp-for="CurrentFolderName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Current Folder ID</label>                       
+                        <input id="currentFolderId" class="form-control" type="text" asp-for="CurrentFolderId" disabled />
+                    </div>
+                </div>
+                <div>
+                    <a id="cancelLinkButton" href="" class="btn btn-primary">cancel</a>
+                    <button type="submit">Submit</button>
+                </div>
+        </form>
+    </section>
+</div>
