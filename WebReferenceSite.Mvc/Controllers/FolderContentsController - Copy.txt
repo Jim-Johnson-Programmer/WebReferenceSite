@@ -54,6 +54,81 @@ namespace WebReferenceSite.Mvc.Controllers
             return View(folderContentsViewModel);
         }
        
+        //Folder add, rename, delete,  move
+        #region Folder Create/Edit/Delete
+        public IActionResult FolderCreateRename(string folderId, string parentId)
+        {
+            //folderId = folderId != "0" ? folderId : "1";//create or update
+
+            FolderCreateRenameViewModel createRenameViewModel = new FolderCreateRenameViewModel();
+            //detect root and disable screen items as needed for root protection
+
+            //TODO: createRenameViewModel = _folderService.GetCreateEditFolderViewModel(folderId, parentId);
+
+            return View(createRenameViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult FolderCreateRename(FolderCreateRenameViewModel inputViewModel)
+        {
+            //prevent duplication if name is new, else is update to existing item.
+            if(inputViewModel.CurrentFolderId=="0")
+            {
+                ModelState.AddModelError("CurrentParentId", "Cannot rename ROOT directory");
+            }
+
+            //prevent rename of root
+
+            if (!ModelState.IsValid)
+            {
+                return View(inputViewModel);
+            }
+
+            //separate create from update directory
+
+
+            string routeValues = string.Format("");
+            return RedirectToAction("FileContents", "FileContents", routeValues);
+        }
+
+        public IActionResult FolderDelete(string id)
+        {
+            return View();
+        }
+
+        public IActionResult FolderMove(string parentId, string id)
+        {
+            return View();
+        }
+
+        public IActionResult FolderSelection(string id)
+        {
+            return View();
+        }
+        #endregion Folder Create/Edit/Delete
+
+        #region Folder Action Validations
+        public IActionResult FolderAddVerify()
+        {
+            return View();
+        }
+
+        public IActionResult FolderRenameVerify()
+        {
+            return View();
+        }
+
+        public IActionResult FolderDeleteVerify()
+        {
+            return View();
+        }
+
+        public IActionResult FolderMoveVerify()
+        {
+            return View();
+        }
+        #endregion Folder Action Validations
+
 
         #region Folder Support Functions
 

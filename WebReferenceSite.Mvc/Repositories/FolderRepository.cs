@@ -1,78 +1,47 @@
-﻿using System.Collections.Generic;
-using WebReferenceSite.Mvc.Models.RepositoryModels;
-using Dapper;
-using System.Data.SqlClient;
-using System.Configuration;
-using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Microsoft.Extensions.Logging;
+using WebReferenceSite.Mvc.Models.RepositoryModels;
 using WebReferenceSite.Mvc.Repositories.DapperWrapper;
 
 namespace WebReferenceSite.Mvc.Repositories
 {
-    public interface IFolderRepository
-    {
-        int CreateFolder(Folder folder);
-        bool UpdateFolder(Folder folder);
-        List<Folder> GetAllRows();
-        List<Folder> GetFolderChildFolders(string parentFolderId);
-        List<Folder> GetFoldersFromIdToRoot(string folderId);
-        Folder GetFolderByFolderId(string folderId);
-        List<Folder> GetFoldersByFolderNamePortion(string folderName);
-    }
 
     public class FolderRepository : IFolderRepository
     {
-        //private string _sqlConnectionString = string.Empty;
+        private string _sqlConnectionString = string.Empty;
         private ILoggerFactory _loggerFactory;
         private ILogger<FolderRepository> _logger;
         private IDbExecutorFactory _dbExecutorFactory;
-        //private IDbExecutor _dapperWrapper;
+        private ILoggerFactory loggerFactory;
 
-        public FolderRepository(IDbExecutorFactory dbExecutorFactory, ILogger<FolderRepository> logger)
+        public FolderRepository(string connectionString ,IDbExecutorFactory dbExecutorFactory, ILoggerFactory loggerFactory)
         {
-            _logger = logger;
-            //_dapperWrapper = dbExecutor;
+            _sqlConnectionString = connectionString;
             _dbExecutorFactory = dbExecutorFactory;
+            _logger = loggerFactory.CreateLogger<FolderRepository>();
         }
-
-        //public FolderRepository(ILogger<FolderRepository> logger, string connectionString)
-        //{
-        //    _sqlConnectionString = connectionString;
-        //    //_loggerFactory = loggerFactory;
-        //    //_logger = loggerFactory.CreateLogger<FolderRepository>();
-        //    _logger = logger;
-        //    _dapperWrapper = new SqlExecutor(new SqlConnection(_sqlConnectionString));
-        //}
-
-        //public FolderRepository(IDbExecutor sqlExecutorWrapper, ILoggerFactory loggerFactory, string connectionString)
-        //{
-        //    _sqlConnectionString = connectionString;
-        //    _loggerFactory = loggerFactory;
-        //    _logger = loggerFactory.CreateLogger<FolderRepository>();
-        //    _dapperWrapper = sqlExecutorWrapper;
-        //}
 
         public List<Folder> GetAllRows()
         {
             List<Folder> folders = new List<Folder>();
-            //SqlConnection connection = new SqlConnection(_sqlConnectionString);
+            IDbExecutor dbExecutor = _dbExecutorFactory.CreateExecutor();
 
-            //try
-            //{                
-            //    folders = connection.Query<Folder>("SELECT FolderId,FolderName,ParentFolderId,ParentFolderName,CreatedOn,UpdatedOn,CreatedBy,UpdatedBy FROM dbo.Folders").AsList<Folder>();
-            //    _logger.LogTrace("FolderService retrieved {0} rows for folder grid", folders.Count());
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    _logger.LogError("Error trying to get ALL folder rows. Error message={0}", ex, ex.Message);
-            //}
-            //finally
-            //{
-            //    connection.Close();
-            //    connection.Dispose();
-            //}
+            try
+            {
+                folders = dbExecutor.Query<Folder>("SELECT FolderId,FolderName,ParentFolderId,ParentFolderName,CreatedOn,UpdatedOn,CreatedBy,UpdatedBy FROM dbo.Folders").AsList<Folder>();
+                _logger.LogTrace("FolderService retrieved {0} rows for folder grid", folders.Count());
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError("Error trying to get ALL folder rows. Error message={0}", ex, ex.Message);
+            }
+            finally
+            {
+                dbExecutor.Dispose();
+            }
 
             return folders;
         }
@@ -104,7 +73,6 @@ namespace WebReferenceSite.Mvc.Repositories
         public Folder GetFolderByFolderId(string folderId)
         {
             Folder folder = new Folder();
-            //SqlConnection connection = new SqlConnection(_sqlConnectionString);
             IDbExecutor dbExecutor = _dbExecutorFactory.CreateExecutor();
 
             try
@@ -151,7 +119,6 @@ namespace WebReferenceSite.Mvc.Repositories
         public List<Folder> GetFoldersFromIdToRoot(string folderId)
         {
             List<Folder> folderList = new List<Folder>();
-            //SqlConnection connection = new SqlConnection(_sqlConnectionString);
             IDbExecutor dbExecutor = _dbExecutorFactory.CreateExecutor();
 
             try
@@ -185,33 +152,30 @@ namespace WebReferenceSite.Mvc.Repositories
         public int CreateFolder(Folder folder)
         {
             int newFolderId = 0;
-            //SqlConnection connection = new SqlConnection(_sqlConnectionString);
-            
-            //try
-            //{
-            //    //int rowsAffected = connection.Execute(sqlQuery, folder);
+            IDbExecutor dbExecutor = _dbExecutorFactory.CreateExecutor();
 
-            //    string sqlQuery = "INSERT INTO [dbo].[Folders]([FolderName],[ParentFolderId],[ParentFolderName],[CreatedOn],[UpdatedOn],[CreatedBy],[UpdatedBy]) Values (";
-            //    sqlQuery += "@FolderName,@ParentFolderId,@ParentFolderName,@CreatedOn,@UpdatedOn,@CreatedBy,@UpdatedBy); ";
-            //    sqlQuery += "SELECT CAST(SCOPE_IDENTITY() as int); ";
-            //    //newFolderId = _dapperWrapper.QueryFirstOrDefault<int>(sqlQuery, folder);
+            try
+            {
+                string sqlQuery = "INSERT INTO [dbo].[Folders]([FolderName],[ParentFolderId],[ParentFolderName],[CreatedOn],[UpdatedOn],[CreatedBy],[UpdatedBy]) Values (";
+                sqlQuery += "@FolderName,@ParentFolderId,@ParentFolderName,GETDATE(),GETDATE(),SYSTEM_USER,SYSTEM_USER); ";
+                sqlQuery += "SELECT CAST(SCOPE_IDENTITY() as int); ";
+                newFolderId = dbExecutor.Execute(sqlQuery, new { FolderName = folder.FolderName, ParentFolderId = folder.ParentFolderId, ParentFolderName = folder.ParentFolderName });
 
-            //    string  sqlAfterQuery = "Select * FROM [dbo].[Folders] WHERE FolderId = @NewFolderId";
-            //    //Folder insertedFolder = _dapperWrapper.QueryFirstOrDefault<Folder>(sqlAfterQuery, new { @NewFolderId = newFolderId });
-            //    if (insertedFolder != null) throw new System.Exception(string.Format("Insert failed for folderName={0} and parentId={1}", folder.FolderName, folder.ParentFolderId));
-                
-            //    _logger.LogTrace("FolderService ADDED folder with id={0} to database", folder.FolderId);
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    _logger.LogError("Error trying to ADD folder. Error message={0}", ex, ex.Message);
-            //    newFolderId = -1;
-            //}
-            //finally
-            //{
-            //    connection.Close();
-            //    connection.Dispose();
-            //}
+                string sqlAfterQuery = "Select * FROM [dbo].[Folders] WHERE FolderId = @NewFolderId";
+                Folder insertedFolder = dbExecutor.Query<Folder>(sqlAfterQuery, new { @NewFolderId = newFolderId }).FirstOrDefault();
+                if (insertedFolder != null) throw new System.Exception(string.Format("Insert failed for folderName={0} and parentId={1}", folder.FolderName, folder.ParentFolderId));
+
+                _logger.LogTrace("FolderService ADDED folder with id={0} to database", folder.FolderId);
+            }
+            catch (System.Exception ex)
+            {
+                newFolderId = -1;
+                _logger.LogError("Error trying to ADD folder. Error message={0}", ex.Message);                
+            }
+            finally
+            {
+                dbExecutor.Dispose();
+            }
 
             return newFolderId;
         }
@@ -219,25 +183,24 @@ namespace WebReferenceSite.Mvc.Repositories
         public bool UpdateFolder(Folder folder)
         {
             bool status = true;
-            //SqlConnection connection = new SqlConnection(_sqlConnectionString);
-            //string sqlQuery = "INSERT INTO [dbo].[Folders]([FolderName],[ParentFolderId],[ParentFolderName],[CreatedOn],[UpdatedOn],[CreatedBy],[UpdatedBy]) Values (";
-            //sqlQuery += "@FolderName,@ParentFolderId,@ParentFolderName,@CreatedOn,@UpdatedOn,@CreatedBy,@UpdatedBy)";
+            int newFolderId;
+            IDbExecutor dbExecutor = _dbExecutorFactory.CreateExecutor();
 
-            //try
-            //{
-            //    int rowsAffected = connection.Execute(sqlQuery, folder);
-            //    _logger.LogTrace("FolderService ADDED folder with id={0} to database", folder.FolderId);
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    _logger.LogError("Error trying to ADD folder. Error message={0}", ex, ex.Message);
-            //    status = false;
-            //}
-            //finally
-            //{
-            //    connection.Close();
-            //    connection.Dispose();
-            //}
+            try
+            {
+                string sqlQuery = "UPDATE [dbo].[Folders] SET [FolderName] = @FolderName ,[UpdatedOn] = GETDATE() ,[UpdatedBy] = SYSTEM_USER WHERE FolderId = @FolderId;";
+                newFolderId = dbExecutor.Execute(sqlQuery, new { FolderName = folder.FolderName, FolderId=folder.FolderId});
+                _logger.LogTrace("FolderService UPDATED folder with id={0} in database", folder.FolderId);
+            }
+            catch (System.Exception ex)
+            {
+                status = false;
+                _logger.LogError("Error trying to UPDATE folder. Error message={0}", ex.Message);
+            }
+            finally
+            {
+                dbExecutor.Dispose();
+            }
 
             return status;
         }
